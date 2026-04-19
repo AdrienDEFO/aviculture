@@ -126,13 +126,17 @@ integral_simpson <- function(ys, dt = 1) {
   # Check if even number of intervals (odd number of points)
   if (n %% 2 != 0 || n < 2) {
     # Fall back to trapezoidal
-    return(integral_trapezoid(ys))
+    # integral_trapezoid() assumes unit spacing when ts is NULL
+    return(integral_trapezoid(ys) * dt)
   }
   
   # Simpson's rule: dt/3 * (y0 + 4*y1 + 2*y2 + 4*y3 + ... + yn)
   s <- ys[1] + ys[length(ys)]
   for (i in 2:(length(ys)-1)) {
-    coeff <- if (i %% 2 == 0) 2 else 4
+    # R uses 1-based indexing:
+    # indices: 1..(n+1) correspond to y0..yn
+    # coefficients: 1, 4, 2, 4, 2, ..., 4, 1
+    coeff <- if (i %% 2 == 0) 4 else 2
     s <- s + coeff * ys[i]
   }
   
