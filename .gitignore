@@ -2,3 +2,10 @@
 .Rhistory
 .RData
 .Ruserdata
+.Renviron
+.Rprofile
+aviculture.Rcheck/
+aviculture_0.1.0.tar.gz
+r-lib/
+renv/
+.renv/

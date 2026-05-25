@@ -1,0 +1,15 @@
+citHeader("To cite aviculture in publications use:")
+
+citEntry(
+  entry = "Manual",
+  title = "aviculture: Age-Mass Structured Poultry Farm Simulation and Optimization",
+  author = personList(
+    person(given = "Adrien", family = "Defo")
+  ),
+  year = "2026",
+  note = "R package version 0.1.0",
+  textVersion = paste(
+    "Defo, A. (2026). aviculture: Age-Mass Structured Poultry Farm",
+    "Simulation and Optimization. R package version 0.1.0."
+  )
+)

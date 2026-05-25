@@ -1,0 +1,79 @@
+---
+title: "Getting Started with aviculture"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Getting Started with aviculture}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Overview
+
+`aviculture` simulates an age-mass structured poultry farm model with healthy
+and growth-stunted chickens. The package provides a PDE solver, indicator
+tables, two-dimensional graphics, supply optimization, and sensitivity
+analysis.
+
+## Basic workflow
+
+```{r}
+library(aviculture)
+
+grid <- create_grid(t_max = 14, a_max = 14, m_max = 1.5, h_t = 0.5, h_m = 0.1)
+parameters <- create_parameters()
+controls <- create_controls(grid = grid)
+
+simulation <- solve_aviculture(
+  grid = grid,
+  parameters = parameters,
+  controls = controls,
+  store_states = TRUE
+)
+
+head(compute_indicators(simulation))
+compute_objectives(simulation)
+```
+
+## Two-dimensional plots
+
+```{r, eval = FALSE}
+plot_population(simulation, overlay = FALSE)
+plot_economics(simulation, overlay = FALSE)
+plot_demand(simulation)
+plot_heatmap(simulation, variable = "healthy", time = 10)
+```
+
+## Sensitivity analysis
+
+```{r}
+sensitivity <- run_sensitivity(
+  grid = grid,
+  parameters = parameters,
+  controls = controls,
+  variables = c("rho", "gamma_scale", "supply_scale"),
+  values = c(0.8, 1, 1.2)
+)
+
+head(sensitivity$results)
+```
+
+## Optimization
+
+```{r, eval = FALSE}
+optimized <- optimize_supply(
+  grid = grid,
+  parameters = parameters,
+  controls = controls,
+  objective = "J2",
+  blocks = 4
+)
+
+summary(optimized$simulation)
+```
